@@ -1,0 +1,26 @@
+name: Daily Commit
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Daily at 12 PM UTC
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Git
+        run: |
+          git config --local user.email "shettythanvi036@gmail.com"
+          git config --local user.name "thanvishettttyy"
+      
+      - name: Create daily entry
+        run: |
+          echo "Daily entry for $(date)" >> daily-log.txt
+          git add daily-log.txt
+          git commit -m "Daily update: $(date)"
+          git push
